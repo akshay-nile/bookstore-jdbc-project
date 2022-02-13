@@ -36,7 +36,7 @@ INSERT INTO books(bookname, author, genre, price) VALUES('Hunger Games','Edgar P
 INSERT INTO books(bookname, author, genre, price) VALUES('Fearless','Jean Leckie','HORROR',310.30);
 INSERT INTO books(bookname, author, genre, price) VALUES('The Edge of Laughter','Charly Dikken','COMEDY',100.60);
 INSERT INTO books(bookname, author, genre, price) VALUES('Swindel','Agatha Cristine','FANTACY',600);
-INSERT INTO books(bookname, author, genre, price) VALUES('Don\'t Turn Arround','Oscar Windley','HORROR',540);
+INSERT INTO books(bookname, author, genre, price) VALUES("Don't Turn Arround",'Oscar Windley','HORROR',540);
 INSERT INTO books(bookname, author, genre, price) VALUES('The Missing Child','Luice Hawk','MYSTERY',230.40);
 INSERT INTO books(bookname, author, genre, price) VALUES('Holocost','Canon Bruice','INSPIRATIONAL',880.20);
 INSERT INTO books(bookname, author, genre, price) VALUES('Dunes','Hellen King','FICTION',930.60);
