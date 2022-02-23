@@ -31,8 +31,8 @@ public class BookRepoImpl implements BookRepository {
 			ResultSet rs = ps.executeQuery(query);
 			while (rs.next()) {
 				Book book = new Book();
-				book.setBookId(rs.getInt("bookid"));
-				book.setBookName(rs.getString("bookname"));
+				book.setId(rs.getInt("id"));
+				book.setName(rs.getString("name"));
 				book.setAuthor(rs.getString("author"));
 				book.setGenre(Genre.valueOf(rs.getString("genre")));
 				book.setPrice(rs.getDouble("price"));
@@ -49,14 +49,15 @@ public class BookRepoImpl implements BookRepository {
 	public List<Printable> fetchRecommendedBooks(User user) {
 		List<Printable> books = new ArrayList<>();
 		try {
-			String query = "SELECT b.bookid, b.bookname, b.author, b.genre, b.price FROM books b, recommendations r WHERE b.bookid=r.bookid AND r.userid=?";
+			String query = "SELECT b.id, b.name, b.author, b.genre, b.price FROM books b ";
+			query += "JOIN recommendations r ON b.id=r.book_id AND r.user_id=?";
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, user.getUserId());
+			ps.setInt(1, user.getId());
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				Book book = new Book();
-				book.setBookId(rs.getInt("bookid"));
-				book.setBookName(rs.getString("bookname"));
+				book.setId(rs.getInt("id"));
+				book.setName(rs.getString("name"));
 				book.setAuthor(rs.getString("author"));
 				book.setGenre(Genre.valueOf(rs.getString("genre")));
 				book.setPrice(rs.getDouble("price"));
@@ -72,10 +73,10 @@ public class BookRepoImpl implements BookRepository {
 
 	public void recommendBook(Book book, User user) {
 		try {
-			String query = "INSERT INTO recommendations(bookid, userid) VALUES(?,?)";
+			String query = "INSERT INTO recommendations(book_id, user_id) VALUES(?,?)";
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, book.getBookId());
-			ps.setInt(2, user.getUserId());
+			ps.setInt(1, book.getId());
+			ps.setInt(2, user.getId());
 			ps.executeUpdate();
 			ps.close();
 		} catch (SQLException e) {
@@ -86,14 +87,14 @@ public class BookRepoImpl implements BookRepository {
 	public Book fetchBookById(int bookId) {
 		Book book = null;
 		try {
-			String query = "SELECT * FROM books WHERE bookid=?";
+			String query = "SELECT * FROM books WHERE id=?";
 			PreparedStatement ps = conn.prepareStatement(query);
 			ps.setInt(1, bookId);
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
 				book = new Book();
-				book.setBookId(rs.getInt("bookid"));
-				book.setBookName(rs.getString("bookname"));
+				book.setId(rs.getInt("id"));
+				book.setName(rs.getString("name"));
 				book.setAuthor(rs.getString("author"));
 				book.setGenre(Genre.valueOf(rs.getString("genre")));
 				book.setPrice(rs.getDouble("price"));
@@ -109,13 +110,14 @@ public class BookRepoImpl implements BookRepository {
 	public List<Printable> fetchAllRecommendedBooks() {
 		List<Printable> list = new ArrayList<>();
 		try {
-			String query = "SELECT b.bookid, b.bookname, b.author, b.genre, b.price FROM books b, recommendations r WHERE b.bookid=r.bookid GROUP BY b.bookid";
+			String query = "SELECT b.id, b.name, b.author, b.genre, b.price FROM books b ";
+			query += "JOIN recommendations r ON b.id=r.book_id GROUP BY b.id";
 			Statement ps = conn.createStatement();
 			ResultSet rs = ps.executeQuery(query);
 			while (rs.next()) {
 				Book book = new Book();
-				book.setBookId(rs.getInt("bookid"));
-				book.setBookName(rs.getString("bookname"));
+				book.setId(rs.getInt("id"));
+				book.setName(rs.getString("name"));
 				book.setAuthor(rs.getString("author"));
 				book.setGenre(Genre.valueOf(rs.getString("genre")));
 				book.setPrice(rs.getDouble("price"));
@@ -131,25 +133,25 @@ public class BookRepoImpl implements BookRepository {
 
 	public void insertRating(int bookId, int rating, User user) {
 		try {
-			String query = "SELECT ratingid FROM ratings WHERE bookid=? AND userid=?";
+			String query = "SELECT id FROM ratings WHERE book_id=? AND user_id=?";
 			PreparedStatement ps = conn.prepareStatement(query);
 			ps.setInt(1, bookId);
-			ps.setInt(2, user.getUserId());
+			ps.setInt(2, user.getId());
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
-				int ratingId = rs.getInt("ratingid");
+				int ratingId = rs.getInt("id");
 				ps.close();
-				query = "UPDATE ratings SET rating=? WHERE ratingid=?";
+				query = "UPDATE ratings SET rating=? WHERE id=?";
 				ps = conn.prepareStatement(query);
 				ps.setInt(1, rating);
 				ps.setInt(2, ratingId);
 			} else {
 				ps.close();
-				query = "INSERT INTO ratings(rating, bookid, userid) VALUES(?,?,?)";
+				query = "INSERT INTO ratings(rating, book_id, user_id) VALUES(?,?,?)";
 				ps = conn.prepareStatement(query);
 				ps.setInt(1, rating);
 				ps.setInt(2, bookId);
-				ps.setInt(3, user.getUserId());
+				ps.setInt(3, user.getId());
 			}
 			ps.executeUpdate();
 			rs.close();
@@ -162,14 +164,15 @@ public class BookRepoImpl implements BookRepository {
 	public List<Printable> fetchRatedBooks(User user) {
 		List<Printable> books = new ArrayList<>();
 		try {
-			String query = "SELECT b.bookid, b.bookname, b.author, b.genre, b.price FROM books b, ratings r WHERE b.bookid=r.bookid AND r.userid=?";
+			String query = "SELECT b.id, b.name, b.author, b.genre, b.price FROM books b ";
+			query += "JOIN ratings r ON b.id=r.book_id AND r.user_id=?";
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, user.getUserId());
+			ps.setInt(1, user.getId());
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				Book book = new Book();
-				book.setBookId(rs.getInt("bookid"));
-				book.setBookName(rs.getString("bookname"));
+				book.setId(rs.getInt("id"));
+				book.setName(rs.getString("name"));
 				book.setAuthor(rs.getString("author"));
 				book.setGenre(Genre.valueOf(rs.getString("genre")));
 				book.setPrice(rs.getDouble("price"));
@@ -186,9 +189,9 @@ public class BookRepoImpl implements BookRepository {
 	public List<Printable> getRatingsGivenByUser(User user) {
 		List<Printable> list = new ArrayList<>();
 		try {
-			String query = "SELECT b.bookid, b.bookname, r.rating FROM books b, ratings r WHERE b.bookid=r.bookid AND r.userid=?";
+			String query = "SELECT b.id, b.name, r.rating FROM books b JOIN ratings r ON b.id=r.book_id AND r.user_id=?";
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, user.getUserId());
+			ps.setInt(1, user.getId());
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				int bookId = rs.getInt(1);

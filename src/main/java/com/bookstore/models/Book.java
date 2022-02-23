@@ -8,8 +8,8 @@ import com.bookstore.utilities.Printable;
 
 public class Book implements Printable {
 
-	private int bookId;
-	private String bookName;
+	private int id;
+	private String name;
 	private String author;
 	private Genre genre;
 	private double price;
@@ -17,31 +17,31 @@ public class Book implements Printable {
 	public Book() {
 	}
 
-	public Book(int bookId, String bookName, String author, Genre genre, double price) {
-		this.bookId = bookId;
-		this.bookName = bookName;
+	public Book(int id, String name, String author, Genre genre, double price) {
+		this.id = id;
+		this.name = name;
 		this.author = author;
 		this.genre = genre;
 		this.price = price;
 	}
 
-	public int getBookId() {
-		return bookId;
+	public int getId() {
+		return id;
 	}
 
-	public void setBookId(int bookId) {
-		this.bookId = bookId;
+	public void setId(int bookId) {
+		this.id = bookId;
 	}
 
-	public String getBookName() {
-		return bookName;
+	public String getName() {
+		return name;
 	}
 
-	public void setBookName(String bookName) {
-		if (bookName == null || bookName.trim().isEmpty()) {
+	public void setName(String name) {
+		if (name == null || name.trim().isEmpty()) {
 			throw new InvalidBookNameException("Book name can't be null or empty.");
 		}
-		this.bookName = bookName;
+		this.name = name;
 	}
 
 	public String getAuthor() {
@@ -73,13 +73,12 @@ public class Book implements Printable {
 
 	@Override
 	public String toString() {
-		return String.format("Book( id=%d, name='%s', price=Rs. %.2f, rating=%.2f, genre=%s )", bookId, bookName, price,
-				genre);
+		return String.format("Book( id=%d, name='%s', price=Rs. %.2f, rating=%.2f, genre=%s )", id, name, price, genre);
 	}
 
 	@Override
 	public int hashCode() {
-		return bookId + bookName.hashCode();
+		return id + name.hashCode();
 	}
 
 	@Override
@@ -97,13 +96,13 @@ public class Book implements Printable {
 		}
 
 		Book other = (Book) obj;
-		return bookId == other.bookId && bookName.equalsIgnoreCase(other.bookName);
+		return id == other.id && name.equalsIgnoreCase(other.name);
 	}
 
 	@Override
 	public void loadCellValues(Map<String, String> row) {
-		row.put("Id", "" + bookId);
-		row.put("Name", bookName);
+		row.put("Id", "" + id);
+		row.put("Name", name);
 		row.put("Author", author);
 		row.put("Genre", "" + genre);
 		row.put("Price", String.format("₹ %.2f", price));

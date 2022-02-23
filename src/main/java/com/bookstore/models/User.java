@@ -6,7 +6,7 @@ import com.bookstore.utilities.Printable;
 
 public class User implements Printable {
 
-	private int userId;
+	private int id;
 	private String username;
 	private String password;
 	private String email;
@@ -26,12 +26,12 @@ public class User implements Printable {
 		this.phone = phone;
 	}
 
-	public int getUserId() {
-		return userId;
+	public int getId() {
+		return id;
 	}
 
-	public void setUserId(int userId) {
-		this.userId = userId;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getUsername() {
@@ -68,13 +68,13 @@ public class User implements Printable {
 
 	@Override
 	public String toString() {
-		return "User [userId=" + userId + ", username=" + username + ", password=" + password + ", email=" + email
+		return "User [userId=" + id + ", username=" + username + ", password=" + password + ", email=" + email
 				+ ", phone=" + phone + "]";
 	}
 
 	@Override
 	public void loadCellValues(Map<String, String> row) {
-		row.put("Id", "" + userId);
+		row.put("Id", "" + id);
 		row.put("Username", username);
 		row.put("Email Id", email);
 		row.put("Phone No.", phone);

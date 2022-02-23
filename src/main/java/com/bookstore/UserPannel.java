@@ -1,5 +1,8 @@
 package com.bookstore;
 
+import static com.bookstore.utilities.Print.title;
+import static com.bookstore.utilities.Printable.printTable;
+
 import java.util.List;
 import java.util.Scanner;
 
@@ -8,7 +11,6 @@ import com.bookstore.models.User;
 import com.bookstore.screens.UserScreen;
 import com.bookstore.services.BookService;
 import com.bookstore.services.UserService;
-import com.bookstore.utilities.Print;
 import com.bookstore.utilities.Printable;
 
 public class UserPannel {
@@ -60,15 +62,15 @@ public class UserPannel {
 			case 'A':
 				list = bookService.fetchAllBooks();
 				if (!list.isEmpty()) {
-					Print.title(" Showing all of the " + list.size() + " books ");
-					Printable.printTable(list, "Id|Name|Author|Genre|Price");
+					title(" Showing all of the " + list.size() + " books ");
+					printTable(list, "Id|Name|Author|Genre|Price");
 				}
 				break;
 			case 'B':
 				list = bookService.fetchAllRecommendedBooks();
 				if (!list.isEmpty()) {
-					Print.title(" Showing all the " + list.size() + " recommended books ");
-					Printable.printTable(list, "Id|Name|Author|Genre|Price");
+					title(" Showing all the " + list.size() + " recommended books ");
+					printTable(list, "Id|Name|Author|Genre|Price");
 				}
 				break;
 			case 'C':
@@ -89,29 +91,29 @@ public class UserPannel {
 			case 'G':
 				list = bookService.fetchRatedBooks(user);
 				if (!list.isEmpty()) {
-					Print.title(" Books rated by " + user.getUsername() + " ");
-					Printable.printTable(list, "Id|Name|Author|Genre|Price");
+					title(" Books rated by " + user.getUsername() + " ");
+					printTable(list, "Id|Name|Author|Genre|Price");
 				}
 				break;
 			case 'R':
 				list = userService.fetchRequestedBooks(user);
 				if (!list.isEmpty()) {
-					Print.title(" Books requested by " + user.getUsername() + " ");
-					Printable.printTable(list, "Id|Book Name|Author Name");
+					title(" Books requested by " + user.getUsername() + " ");
+					printTable(list, "Id|Book Name|Author Name");
 				}
 				break;
 			case 'H':
 				list = bookService.fetchRecommendedBooks(user);
 				if (!list.isEmpty()) {
-					Print.title(" Books recommended by " + user.getUsername() + " ");
-					Printable.printTable(list, "Id|Name|Author|Genre|Price");
+					title(" Books recommended by " + user.getUsername() + " ");
+					printTable(list, "Id|Name|Author|Genre|Price");
 				}
 				break;
 			case 'I':
 				list = bookService.getRatingsGivenByUser(user);
 				if (!list.isEmpty()) {
-					Print.title(" Ratings given by " + user.getUsername() + " ");
-					Printable.printTable(list, "Id|Book Name|Ratings");
+					title(" Ratings given by " + user.getUsername() + " ");
+					printTable(list, "Id|Book Name|Ratings");
 				}
 				break;
 			case 'P':
@@ -147,15 +149,15 @@ public class UserPannel {
 			case 'A':
 				list = bookService.fetchAllBooks();
 				if (!list.isEmpty()) {
-					Print.title(" Showing all of the " + list.size() + " books ");
-					Printable.printTable(list, "Id|Name|Author|Genre|Price");
+					title(" Showing all of the " + list.size() + " books ");
+					printTable(list, "Id|Name|Author|Genre|Price");
 				}
 				break;
 			case 'B':
 				list = bookService.fetchAllRecommendedBooks();
 				if (!list.isEmpty()) {
-					Print.title(" Showing all the " + list.size() + " recommended books ");
-					Printable.printTable(list, "Id|Name|Author|Genre|Price");
+					title(" Showing all the " + list.size() + " recommended books ");
+					printTable(list, "Id|Name|Author|Genre|Price");
 				}
 				break;
 			case 'C':

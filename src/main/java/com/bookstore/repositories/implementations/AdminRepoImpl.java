@@ -26,18 +26,18 @@ public class AdminRepoImpl implements AdminRepository {
 		List<Printable> list = new ArrayList<>();
 		try {
 			String query = "";
-			query += "SELECT b.bookid, b.bookname, b.author, b.genre, b.price, AVG(rt.rating) AS avg_rating, COUNT(rm.userid) AS user_count ";
+			query += "SELECT b.id, b.name, b.author, b.genre, b.price, AVG(rt.rating) AS avg_rating, COUNT(rm.user_id) AS user_count ";
 			query += "FROM books AS b ";
-			query += "LEFT JOIN ratings AS rt ON b.bookid=rt.bookid ";
-			query += "LEFT JOIN recommendations AS rm ON b.bookid=rm.bookid ";
-			query += "GROUP BY b.bookid";
+			query += "LEFT JOIN ratings AS rt ON b.id=rt.book_id ";
+			query += "LEFT JOIN recommendations AS rm ON b.id=rm.book_id ";
+			query += "GROUP BY b.id";
 
 			Statement ps = conn.createStatement();
 			ResultSet rs = ps.executeQuery(query);
 
 			while (rs.next()) {
-				String id = "" + rs.getInt("b.bookid");
-				String bookName = rs.getString("b.bookname");
+				String id = "" + rs.getInt("b.id");
+				String name = rs.getString("b.name");
 				String author = rs.getString("b.author");
 				String genre = String.valueOf(rs.getString("b.genre"));
 				String price = String.format("₹ %.2f", rs.getDouble("b.price"));
@@ -47,7 +47,7 @@ public class AdminRepoImpl implements AdminRepository {
 				String userCount = r > 0 ? r + (r > 1 ? " users" : " user") : "not recommended";
 				list.add((row) -> {
 					row.put("Id", id);
-					row.put("Book Name", bookName);
+					row.put("Book Name", name);
 					row.put("Author", author);
 					row.put("Genre", genre);
 					row.put("Price", price);
@@ -66,9 +66,9 @@ public class AdminRepoImpl implements AdminRepository {
 
 	public boolean deleteBook(Book book) {
 		try {
-			String query = "DELETE FROM books WHERE bookid=?";
+			String query = "DELETE FROM books WHERE id=?";
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, book.getBookId());
+			ps.setInt(1, book.getId());
 			ps.executeUpdate();
 			ps.close();
 			return true;
@@ -80,9 +80,9 @@ public class AdminRepoImpl implements AdminRepository {
 
 	public boolean addNewBook(Book book) {
 		try {
-			String query = "INSERT INTO books(bookname, author, genre, price) VALUES(?,?,?,?)";
+			String query = "INSERT INTO books(name, author, genre, price) VALUES(?,?,?,?)";
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setString(1, book.getBookName());
+			ps.setString(1, book.getName());
 			ps.setString(2, book.getAuthor());
 			ps.setString(3, book.getGenre().toString());
 			ps.setDouble(4, book.getPrice());
@@ -97,13 +97,13 @@ public class AdminRepoImpl implements AdminRepository {
 
 	public boolean updateExistingBook(Book book) {
 		try {
-			String query = "UPDATE books SET bookname=?, author=?, genre=?, price=? WHERE bookid=?";
+			String query = "UPDATE books SET name=?, author=?, genre=?, price=? WHERE id=?";
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setString(1, book.getBookName());
+			ps.setString(1, book.getName());
 			ps.setString(2, book.getAuthor());
 			ps.setString(3, book.getGenre().toString());
 			ps.setDouble(4, book.getPrice());
-			ps.setInt(5, book.getBookId());
+			ps.setInt(5, book.getId());
 			ps.executeUpdate();
 			ps.close();
 			return true;
@@ -117,10 +117,10 @@ public class AdminRepoImpl implements AdminRepository {
 		List<Printable> list = new ArrayList<>();
 		try {
 			String query = "";
-			query += "SELECT b.bookid, b.bookname, b.author, b.genre, b.price, AVG(rt.rating) AS avg_rating ";
+			query += "SELECT b.id, b.name, b.author, b.genre, b.price, AVG(rt.rating) AS avg_rating ";
 			query += "FROM books AS b ";
-			query += "LEFT JOIN ratings AS rt ON b.bookid=rt.bookid ";
-			query += "GROUP BY b.bookid ";
+			query += "LEFT JOIN ratings AS rt ON b.id=rt.book_id ";
+			query += "GROUP BY b.id ";
 			query += "ORDER BY (avg_rating) DESC ";
 			query += "LIMIT 5";
 
@@ -128,8 +128,8 @@ public class AdminRepoImpl implements AdminRepository {
 			ResultSet rs = ps.executeQuery(query);
 
 			while (rs.next()) {
-				String id = "" + rs.getInt("b.bookid");
-				String bookName = rs.getString("b.bookname");
+				String id = "" + rs.getInt("b.id");
+				String name = rs.getString("b.name");
 				String author = rs.getString("b.author");
 				String genre = String.valueOf(rs.getString("b.genre"));
 				String price = String.format("₹ %.2f", rs.getDouble("b.price"));
@@ -140,7 +140,7 @@ public class AdminRepoImpl implements AdminRepository {
 				String avgRating = "✶ ".repeat(r).trim();
 				list.add((row) -> {
 					row.put("Id", id);
-					row.put("Book Name", bookName);
+					row.put("Book Name", name);
 					row.put("Author", author);
 					row.put("Genre", genre);
 					row.put("Price", price);
@@ -160,10 +160,10 @@ public class AdminRepoImpl implements AdminRepository {
 		List<Printable> list = new ArrayList<>();
 		try {
 			String query = "";
-			query += "SELECT b.bookid, b.bookname, b.author, b.genre, b.price, COUNT(rm.userid) AS user_count ";
+			query += "SELECT b.id, b.name, b.author, b.genre, b.price, COUNT(rm.user_id) AS user_count ";
 			query += "FROM books AS b ";
-			query += "LEFT JOIN recommendations AS rm ON b.bookid=rm.bookid ";
-			query += "GROUP BY b.bookid ";
+			query += "LEFT JOIN recommendations AS rm ON b.id=rm.book_id ";
+			query += "GROUP BY b.id ";
 			query += "ORDER BY (user_count) DESC ";
 			query += "LIMIT 5";
 
@@ -171,8 +171,8 @@ public class AdminRepoImpl implements AdminRepository {
 			ResultSet rs = ps.executeQuery(query);
 
 			while (rs.next()) {
-				String id = "" + rs.getInt("b.bookid");
-				String bookName = rs.getString("b.bookname");
+				String id = "" + rs.getInt("b.id");
+				String name = rs.getString("b.name");
 				String author = rs.getString("b.author");
 				String genre = String.valueOf(rs.getString("b.genre"));
 				String price = String.format("₹ %.2f", rs.getDouble("b.price"));
@@ -183,7 +183,7 @@ public class AdminRepoImpl implements AdminRepository {
 				String userCount = r + (r > 1 ? " users" : " user");
 				list.add((row) -> {
 					row.put("Id", id);
-					row.put("Book Name", bookName);
+					row.put("Book Name", name);
 					row.put("Author", author);
 					row.put("Genre", genre);
 					row.put("Price", price);
@@ -203,15 +203,15 @@ public class AdminRepoImpl implements AdminRepository {
 		List<Printable> list = new ArrayList<>();
 		try {
 			String query = "";
-			query += "SELECT u.userid, u.username, u.email, u.phone, s.userid AS status ";
+			query += "SELECT u.id, u.username, u.email, u.phone, s.user_id AS status ";
 			query += "FROM users AS u ";
-			query += "LEFT JOIN blocklist AS s ON u.userid=s.userid";
+			query += "LEFT JOIN blocklist AS s ON u.id=s.user_id";
 
 			Statement ps = conn.createStatement();
 			ResultSet rs = ps.executeQuery(query);
 
 			while (rs.next()) {
-				String id = "" + rs.getInt("u.userid");
+				String id = "" + rs.getInt("u.id");
 				String username = rs.getString("u.username");
 				String email = rs.getString("u.email");
 				String phone = rs.getString("u.phone");
@@ -235,10 +235,10 @@ public class AdminRepoImpl implements AdminRepository {
 	}
 
 	public void toggleUserStatus(User user, boolean isActive) {
-		String query = isActive ? "INSERT INTO blocklist VALUES(?)" : "DELETE FROM blocklist WHERE userid=?";
+		String query = isActive ? "INSERT INTO blocklist VALUES(?)" : "DELETE FROM blocklist WHERE user_id=?";
 		try {
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, user.getUserId());
+			ps.setInt(1, user.getId());
 			ps.executeUpdate();
 			ps.close();
 		} catch (SQLException e) {

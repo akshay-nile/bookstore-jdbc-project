@@ -1,5 +1,8 @@
 package com.bookstore;
 
+import static com.bookstore.utilities.Print.title;
+import static com.bookstore.utilities.Printable.printTable;
+
 import java.util.List;
 import java.util.Scanner;
 
@@ -8,7 +11,6 @@ import com.bookstore.screens.AdminScreen;
 import com.bookstore.services.AdminService;
 import com.bookstore.services.BookService;
 import com.bookstore.services.UserService;
-import com.bookstore.utilities.Print;
 import com.bookstore.utilities.Printable;
 
 public class AdminPannel {
@@ -29,7 +31,7 @@ public class AdminPannel {
 		List<Printable> list;
 		int attempts = 3;
 
-		Print.title(" Welcome to the Admin Pannel ");
+		title(" Welcome to the Admin Pannel ");
 
 		while (attempts-- > 0) {
 			System.out.print("Enter admin password: ");
@@ -51,8 +53,8 @@ public class AdminPannel {
 			case 'A':
 				list = adminService.fetchAllBookDetails();
 				if (!list.isEmpty()) {
-					Print.title(" Showing the details of all " + list.size() + " books ");
-					Printable.printTable(list, "Id|Book Name|Author|Genre|Price|Avg Rating|Recommended by");
+					title(" Showing the details of all " + list.size() + " books ");
+					printTable(list, "Id|Book Name|Author|Genre|Price|Avg Rating|Recommended by");
 				}
 				break;
 			case 'B':
@@ -67,29 +69,29 @@ public class AdminPannel {
 			case 'E':
 				list = adminService.fetchTop5MostRatedBooks();
 				if (!list.isEmpty()) {
-					Print.title(" Top " + list.size() + " most rated books ");
-					Printable.printTable(list, "Id|Book Name|Author|Genre|Price|Avg Rating");
+					title(" Top " + list.size() + " most rated books ");
+					printTable(list, "Id|Book Name|Author|Genre|Price|Avg Rating");
 				}
 				break;
 			case 'Q':
 				list = adminService.fetchTop5MostRequestedBooks();
 				if (!list.isEmpty()) {
-					Print.title(" Top " + list.size() + " most requested books ");
-					Printable.printTable(list, "Book Name|Author Name|Requested by");
+					title(" Top " + list.size() + " most requested books ");
+					printTable(list, "Book Name|Author Name|Requested by");
 				}
 				break;
 			case 'F':
 				list = adminService.fetchTop5MostRecommendedBooks();
 				if (!list.isEmpty()) {
-					Print.title(" Top " + list.size() + " most recommended books ");
-					Printable.printTable(list, "Id|Book Name|Author|Genre|Price|Recommended by");
+					title(" Top " + list.size() + " most recommended books ");
+					printTable(list, "Id|Book Name|Author|Genre|Price|Recommended by");
 				}
 				break;
 			case 'G':
 				list = adminService.fetchAllUserDetails();
 				if (!list.isEmpty()) {
-					Print.title(" Showing the details of all " + list.size() + " users ");
-					Printable.printTable(list, "Id|Username|Email Id|Phone No.|Status");
+					title(" Showing the details of all " + list.size() + " users ");
+					printTable(list, "Id|Username|Email Id|Phone No.|Status");
 				}
 				break;
 			case 'H':

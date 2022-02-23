@@ -24,7 +24,7 @@ public class UserRepoImpl implements UserRepository {
 	public boolean fieldExists(String fieldName, String fieldValue) {
 		boolean exist = false;
 		try {
-			String query = "SELECT userid FROM users WHERE " + fieldName + "=?";
+			String query = "SELECT id FROM users WHERE " + fieldName + "=?";
 			PreparedStatement ps = conn.prepareStatement(query);
 			ps.setString(1, fieldValue);
 			ResultSet rs = ps.executeQuery();
@@ -55,14 +55,14 @@ public class UserRepoImpl implements UserRepository {
 	public User fetchUser(String username, String password) {
 		User user = null;
 		try {
-			String query = "SELECT userid, email, phone FROM users WHERE username=? AND password=?";
+			String query = "SELECT id, email, phone FROM users WHERE username=? AND password=?";
 			PreparedStatement ps = conn.prepareStatement(query);
 			ps.setString(1, username);
 			ps.setInt(2, password.hashCode());
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
 				user = new User(username, password);
-				user.setUserId(rs.getInt("userid"));
+				user.setId(rs.getInt("id"));
 				user.setEmail(rs.getString("email"));
 				user.setPhone(rs.getString("phone"));
 			}
@@ -77,7 +77,7 @@ public class UserRepoImpl implements UserRepository {
 	public double getCumulativeRatings() {
 		double avgRating = 0.0;
 		try {
-			String query = "SELECT SUM(r.rating)/COUNT(b.bookid) AS avg_rating FROM books AS b LEFT JOIN ratings AS r ON b.bookid=r.ratingid";
+			String query = "SELECT SUM(r.rating)/COUNT(b.id) AS avg_rating FROM books AS b LEFT JOIN ratings AS r ON b.id=r.id";
 			Statement ps = conn.createStatement();
 			ResultSet rs = ps.executeQuery(query);
 			if (rs.next()) {
@@ -93,9 +93,9 @@ public class UserRepoImpl implements UserRepository {
 
 	public boolean deleteUserAccount(User user) {
 		try {
-			String query = "DELETE FROM users WHERE userid=?";
+			String query = "DELETE FROM users WHERE id=?";
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, user.getUserId());
+			ps.setInt(1, user.getId());
 			ps.executeUpdate();
 			ps.close();
 			return true;
@@ -107,10 +107,10 @@ public class UserRepoImpl implements UserRepository {
 
 	public boolean updateUserPassword(User user) {
 		try {
-			String query = "UPDATE users SET password=? WHERE userid=?";
+			String query = "UPDATE users SET password=? WHERE id=?";
 			PreparedStatement ps = conn.prepareStatement(query);
 			ps.setInt(1, user.getPassword().hashCode());
-			ps.setInt(2, user.getUserId());
+			ps.setInt(2, user.getId());
 			ps.executeUpdate();
 			ps.close();
 			return true;
@@ -123,9 +123,9 @@ public class UserRepoImpl implements UserRepository {
 	public boolean isUserBlocked(User user) {
 		boolean blocked = false;
 		try {
-			String query = "SELECT userid FROM blocklist WHERE userid=?";
+			String query = "SELECT user_id FROM blocklist WHERE user_id=?";
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, user.getUserId());
+			ps.setInt(1, user.getId());
 			ResultSet rs = ps.executeQuery();
 			blocked = rs.next();
 			rs.close();
@@ -139,13 +139,13 @@ public class UserRepoImpl implements UserRepository {
 	public User fetchUserById(int userId) {
 		User user = null;
 		try {
-			String query = "SELECT * FROM users WHERE userid=?";
+			String query = "SELECT * FROM users WHERE id=?";
 			PreparedStatement ps = conn.prepareStatement(query);
 			ps.setInt(1, userId);
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
 				user = new User();
-				user.setUserId(rs.getInt("userid"));
+				user.setId(rs.getInt("id"));
 				user.setUsername(rs.getString("username"));
 				user.setEmail(rs.getString("email"));
 				user.setPhone(rs.getString("phone"));
@@ -160,21 +160,21 @@ public class UserRepoImpl implements UserRepository {
 
 	public boolean addBookRequest(User user, String bookName, String authorName) {
 		try {
-			String query = "SELECT userid FROM requests WHERE bookname=? AND authorname=?";
+			String query = "SELECT user_id FROM requests WHERE bookname=? AND authorname=?";
 			PreparedStatement ps = conn.prepareStatement(query);
 			ps.setString(1, bookName);
 			ps.setString(2, authorName);
 			ResultSet rs = ps.executeQuery();
-			if (rs.next() && rs.getInt("userid") == user.getUserId()) {
+			if (rs.next() && rs.getInt("user_id") == user.getId()) {
 				rs.close();
 				ps.close();
 				return false;
 			}
-			query = "INSERT INTO requests(bookname, authorname, userid) VALUES(?,?,?)";
+			query = "INSERT INTO requests(bookname, authorname, user_id) VALUES(?,?,?)";
 			ps = conn.prepareStatement(query);
 			ps.setString(1, bookName);
 			ps.setString(2, authorName);
-			ps.setInt(3, user.getUserId());
+			ps.setInt(3, user.getId());
 			ps.executeUpdate();
 			ps.close();
 		} catch (SQLException e) {
@@ -186,12 +186,12 @@ public class UserRepoImpl implements UserRepository {
 	public List<Printable> fetchRequestedBooks(User user) {
 		List<Printable> list = new ArrayList<>();
 		try {
-			String query = "SELECT requestid, bookname, authorname FROM requests WHERE userid=?";
+			String query = "SELECT id, bookname, authorname FROM requests WHERE user_id=?";
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, user.getUserId());
+			ps.setInt(1, user.getId());
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				String requestId = "" + rs.getInt("requestid");
+				String requestId = "" + rs.getInt("id");
 				String bookName = rs.getString("bookname");
 				String authorName = rs.getString("authorname");
 				list.add((row) -> {

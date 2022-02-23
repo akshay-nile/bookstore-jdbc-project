@@ -62,7 +62,7 @@ public interface AdminScreen {
 	private static Book getBookDetailsFromUser(Scanner sc, Book oldBook) {
 		System.out.println();
 		if(oldBook != null) {
-			System.out.println("Current book name is \"" + oldBook.getBookName() + "\"");
+			System.out.println("Current book name is \"" + oldBook.getName() + "\"");
 		}
 		System.out.print("Enter the book name: ");
 		String bookName = sc.nextLine();
@@ -127,7 +127,7 @@ public interface AdminScreen {
 			return;
 		}
 		
-		book.setBookId(bookId);
+		book.setId(bookId);
 		adminService.updateExistingBook(book);
 	}
 
