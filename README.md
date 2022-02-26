@@ -6,7 +6,7 @@
 under the guidance of our mentor **Payal Dedia** 
 during our **IMPACT training** at **Stackroute**. 
 
-### Procedure to get this app started is a follows:
+### Procedure to get this app started is as follows:
 
 1. Clone this repository locally on your machine.
 2. Open "setup.sql" script in MySQL Workbench and run this script once.
