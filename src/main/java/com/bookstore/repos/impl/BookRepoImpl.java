@@ -1,4 +1,4 @@
-package com.bookstore.repositories.implementations;
+package com.bookstore.repos.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,7 +12,7 @@ import com.bookstore.configs.DBConnection;
 import com.bookstore.models.Book;
 import com.bookstore.models.Genre;
 import com.bookstore.models.User;
-import com.bookstore.repositories.BookRepository;
+import com.bookstore.repos.BookRepository;
 import com.bookstore.utilities.Printable;
 
 public class BookRepoImpl implements BookRepository {

@@ -4,8 +4,8 @@ import java.util.List;
 
 import com.bookstore.models.Book;
 import com.bookstore.models.User;
-import com.bookstore.repositories.BookRepository;
-import com.bookstore.repositories.implementations.BookRepoImpl;
+import com.bookstore.repos.BookRepository;
+import com.bookstore.repos.impl.BookRepoImpl;
 import com.bookstore.utilities.Printable;
 
 public class BookService {

@@ -4,8 +4,8 @@ import java.util.List;
 
 import com.bookstore.models.Book;
 import com.bookstore.models.User;
-import com.bookstore.repositories.AdminRepository;
-import com.bookstore.repositories.implementations.AdminRepoImpl;
+import com.bookstore.repos.AdminRepository;
+import com.bookstore.repos.impl.AdminRepoImpl;
 import com.bookstore.utilities.Printable;
 
 public class AdminService {

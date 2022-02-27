@@ -1,4 +1,4 @@
-package com.bookstore.repositories.implementations;
+package com.bookstore.repos.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,7 +11,7 @@ import java.util.List;
 import com.bookstore.configs.DBConnection;
 import com.bookstore.models.Book;
 import com.bookstore.models.User;
-import com.bookstore.repositories.AdminRepository;
+import com.bookstore.repos.AdminRepository;
 import com.bookstore.utilities.Printable;
 
 public class AdminRepoImpl implements AdminRepository {

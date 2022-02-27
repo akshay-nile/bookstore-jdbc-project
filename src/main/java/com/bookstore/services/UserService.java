@@ -3,8 +3,8 @@ package com.bookstore.services;
 import java.util.List;
 
 import com.bookstore.models.User;
-import com.bookstore.repositories.UserRepository;
-import com.bookstore.repositories.implementations.UserRepoImpl;
+import com.bookstore.repos.UserRepository;
+import com.bookstore.repos.impl.UserRepoImpl;
 import com.bookstore.utilities.Printable;
 
 public class UserService {
